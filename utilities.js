@@ -2,6 +2,30 @@
 var map;
 var markers = [];
 
+// get the location of the first bus and plot it
+var getAndPlotFirstBus = function(){
+	clearMarkers();
+	var busLocations = getBusLocations();
+	addMarkers(busLocations.vehicle[0]);
+};
+
+// get the location of all the buses and plot them
+var getAndPlotAllBuses = function(){
+	clearMarkers();
+	var busLocations = getBusLocations();
+	for (var j = 0; j< busLocations.vehicle.length; j++)
+	{
+		addMarkers(busLocations.vehicle[j]);
+	}
+	console.log("Bus schedule as of " + new Date());
+};
+
+// get the location of all the buses and plot them every 15 seconds
+var getAndPlotAllBusesWithTimer = function(){
+	clearMarkers();
+	setInterval(getAndPlotAllBuses, 15000);
+}
+
 var getBusLocations = function(){
 	var url = 'http://webservices.nextbus.com/service/publicJSONFeed?command=vehicleLocations&a=mbta&r=1&t=0';
 
@@ -70,6 +94,15 @@ var getMarker = function (id){
 	return marker;
 };
 
+
+
+// Removes the markers from the map and clear the array
+var clearMarkers = function() {
+	for (var i = 0; i < markers.length; i++) {
+		markers[i].setMap(null);
+	}
+	markers = [];
+}
 
 // create map instance
 init();	
